@@ -1,0 +1,26 @@
+stages:
+  - deploy
+
+deploy_green:
+  stage: deploy
+  only:
+    - web
+  script:
+    - sudo rm -rf /var/www/green/bitrix/modules/trusted.cryptoarmdocsorders/
+    - sudo cp -R trusted.cryptoarmdocsorders /var/www/green/bitrix/modules/
+    - sudo chown -R vv:www-data /var/www/green/bitrix/modules/trusted.cryptoarmdocsorders/
+    - sudo find /var/www/green/bitrix/modules/trusted.cryptoarmdocsorders/ -type f -exec chmod 0664 {} \;
+    - sudo find /var/www/green/bitrix/modules/trusted.cryptoarmdocsorders/ -type d -exec chmod 2775 {} \;
+  when: manual
+
+deploy_yellow:
+  stage: deploy
+  only:
+    - web
+  script:
+    - sudo rm -rf /var/www/yellow/bitrix/modules/trusted.cryptoarmdocsorders/
+    - sudo cp -R trusted.cryptoarmdocsorders /var/www/yellow/bitrix/modules/
+    - sudo chown -R vv:www-data /var/www/yellow/bitrix/modules/trusted.cryptoarmdocsorders/
+    - sudo find /var/www/yellow/bitrix/modules/trusted.cryptoarmdocsorders/ -type f -exec chmod 0664 {} \;
+    - sudo find /var/www/yellow/bitrix/modules/trusted.cryptoarmdocsorders/ -type d -exec chmod 2775 {} \;
+  when: manual
