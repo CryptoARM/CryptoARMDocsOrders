@@ -43,15 +43,11 @@ Class trusted_cryptoarmdocsorders extends CModule
     {
         global $DOCUMENT_ROOT, $APPLICATION;
 
-        include __DIR__ . "/version.php";
-
         //$context = Application::getInstance()->getContext();
         //$request = $context->getRequest();
         //step = (int)$request["step"];
 
-        if (!self::d7Support() || !self::coreModuleInstalled()
-        || !self::ModuleIsRelevant(ModuleManager::getVersion("trusted.cryptoarmdocs"), $arModuleVersion["VERSION"])
-        || !self::ModuleIsRelevant($arModuleVersion["VERSION"], ModuleManager::getVersion("trusted.cryptoarmdocs"))) {
+        if (!self::d7Support() || !self::coreModuleInstalled() || self::CoreAndModuleAreCompatible()!==true) {
             $APPLICATION->IncludeAdminFile(
                 Loc::getMessage("MOD_INSTALL_TITLE"),
                  $DOCUMENT_ROOT . "/bitrix/modules/" . self::MODULE_ID . "/install/step_cancel.php"
@@ -109,12 +105,18 @@ Class trusted_cryptoarmdocsorders extends CModule
         return IsModuleInstalled("trusted.cryptoarmdocs");
     }
 
-    function ModuleIsRelevant($module1, $module2)
+    function CoreAndModuleAreCompatible()
     {
-        $module1 = explode(".", $module1);
-        $module2 = explode(".", $module2);
-        if (intval($module2[0])>intval($module1[0])) return false;
-            elseif (intval($module2[0])<=intval($module1[0])) return true;
+        include __DIR__ . "/version.php";
+        $coreVersion = explode(".", ModuleManager::getVersion("trusted.cryptoarmdocs"));
+        $moduleVersion = explode(".", $arModuleVersion["VERSION"]);
+        if (intval($moduleVersion[0])>intval($coreVersion[0])) {
+            $res = "updateCore";
+        } elseif (intval($moduleVersion[0])<intval($coreVersion[0])) {
+            $res = "updateModule";
+        } else $res = true;
+
+        return $res;
     }
 
 
