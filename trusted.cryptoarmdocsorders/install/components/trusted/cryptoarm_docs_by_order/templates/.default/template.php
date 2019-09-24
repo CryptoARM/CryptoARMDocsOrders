@@ -33,7 +33,7 @@ $zipName = $title . " " . date($DB->DateFormatToPHP(CSite::GetDateFormat("FULL")
     <trca-docs>
         <header-title title="<?= $title ?>">
             <? if (!empty($allIds)) { ?>
-                <header-menu>
+                <header-menu id="trca-docs-header-menu-by-order">
                     <header-menu-button icon="email" :id="<?= $allIdsJs ?>" @button-click="sendEmail"
                                        message="<?= Loc::getMessage("TR_CA_DOCS_COMP_DOCS_BY_ORDER_SEND_DOCS_ALL"); ?>">
                     </header-menu-button>
