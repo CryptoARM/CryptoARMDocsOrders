@@ -1,11 +1,7 @@
 <?php
-
 use Trusted\CryptoARM\Docs;
 use Bitrix\Main\Localization\Loc;
-use Bitrix\Main\Config\Option;
-use Bitrix\Main\IO\File;
 use Bitrix\Main\Loader;
-use Bitrix\Main\ModuleManager;
 use Bitrix\Main\Application;
 use Bitrix\Main\EventManager;
 
@@ -17,16 +13,20 @@ $app = Application::getInstance();
 $context = $app->getContext();
 $docRoot = $context->getServer()->getDocumentRoot();
 
+if (CModule::IsModuleInstalled($module_id)) {
+    echo GetMessage("TR_CA_DOCS_MODULE_CORE_DOES_NOT_EXIST");
+    die();
+}
+
 if (CModule::IncludeModuleEx($module_id) == MODULE_DEMO_EXPIRED) {
     echo GetMessage("TR_CA_DOCS_MODULE_DEMO_EXPIRED");
     die();
 };
 
-Loader::includeModule($module_id);
 Loc::loadMessages($docRoot . "/bitrix/modules/" . $module_id . "/admin/trusted_cryptoarm_docs.php");
 
 // Do not show page if module sale is unavailable
-if (!ModuleManager::isModuleInstalled("sale")) {
+if (!CModule::IsModuleInstalled("sale")) {
     echo "SALE_MODULE_NOT_INSTALLED";
     require($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/include/epilog_admin_after.php');
     die();

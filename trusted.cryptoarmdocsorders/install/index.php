@@ -4,11 +4,10 @@ use Bitrix\Main\Config\Option;
 use Bitrix\Main\Application;
 use Bitrix\Main\ModuleManager;
 use Trusted\CryptoARM\Docs;
+
 Loc::loadMessages(__FILE__);
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/trusted.cryptoarmdocsorders/include.php';
-// require_once $_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/trusted.cryptoarmdocsbp/classes/WorkflowDocument.php';
-
 
 Class trusted_cryptoarmdocsorders extends CModule
 {
@@ -43,56 +42,16 @@ Class trusted_cryptoarmdocsorders extends CModule
     {
         global $DOCUMENT_ROOT, $APPLICATION;
 
-        //$context = Application::getInstance()->getContext();
-        //$request = $context->getRequest();
-        //step = (int)$request["step"];
-
-        if (!self::d7Support() || !self::coreModuleInstalled() || self::CoreAndModuleAreCompatible()!==true) {
+        if (!self::d7Support() && !self::coreModuleInstalled() && self::CoreAndModuleAreCompatible()["success"]) {
             $APPLICATION->IncludeAdminFile(
                 Loc::getMessage("MOD_INSTALL_TITLE"),
                  $DOCUMENT_ROOT . "/bitrix/modules/" . self::MODULE_ID . "/install/step_cancel.php"
             );
         }
 
-
-        // if ($request["choice"] == Loc::getMessage("TR_CA_DOCS_CANCEL_INSTALL")) {
-        //     $continue = false;
-        // }
-        // if ($step < 2 && $continue) {
-        //     $APPLICATION->IncludeAdminFile(
-        //         Loc::getMessage("MOD_INSTALL_TITLE"),
-        //         $DOCUMENT_ROOT . "/bitrix/modules/" . $this->MODULE_ID . "/install/step1.php"
-
-        //     );
-
-        // }
-        // if ($step == 2 && $continue) {
-        //     $APPLICATION->IncludeAdminFile(
-        //         Loc::getMessage("MOD_INSTALL_TITLE"),
-        //         $DOCUMENT_ROOT . "/bitrix/modules/" . $this->MODULE_ID . "/install/step2.php"
-        //     );
-        // }
-        // if ($step == 3 && $continue) {
-        //     $APPLICATION->IncludeAdminFile(
-        //         Loc::getMessage("MOD_INSTALL_TITLE"),
-        //         $DOCUMENT_ROOT . "/bitrix/modules/" . $this->MODULE_ID . "/install/step3.php"
-        //     );
-        // }
-        // if ($step == 4 && $continue) {
-        //     if ($request["dropDB"] == "Y") {
-        //         $this->UnInstallDB();
-        //         $this->UnInstallIb();
-        //     } elseif ($request["dropLostDocs"]) {
-        //         $lostDocs = unserialize($request["dropLostDocs"]);
-        //         foreach ($lostDocs as $id) {
-        //             $this->dropDocumentChain($id);
-        //         }
-        //     }
-
         self::InstallFiles();
 
         ModuleManager::registerModule(self::MODULE_ID);
-
     }
 
     function d7Support()
@@ -107,18 +66,27 @@ Class trusted_cryptoarmdocsorders extends CModule
 
     function CoreAndModuleAreCompatible()
     {
+        $res = [
+            "success" => false,
+            "message" => "unknown error"
+        ];
+
         include __DIR__ . "/version.php";
         $coreVersion = explode(".", ModuleManager::getVersion("trusted.cryptoarmdocs"));
         $moduleVersion = explode(".", $arModuleVersion["VERSION"]);
         if (intval($moduleVersion[0])>intval($coreVersion[0])) {
-            $res = "updateCore";
+            $res["message"] = "updateCore";
         } elseif (intval($moduleVersion[0])<intval($coreVersion[0])) {
-            $res = "updateModule";
-        } else $res = true;
+            $res["message"] = "updateModule";
+        } else {
+            $res = [
+                "success" => true,
+                "message" => "ok"
+            ];
+        }
 
         return $res;
     }
-
 
     function InstallFiles()
     {

@@ -3,7 +3,6 @@ use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\ModuleManager;
 use Trusted\CryptoARM\Docs;
 
-
 # TODO: Use single cancel page for all terminations
 # TODO: Add curl check during installation
 

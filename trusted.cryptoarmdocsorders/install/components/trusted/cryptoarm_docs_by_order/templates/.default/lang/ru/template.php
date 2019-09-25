@@ -16,4 +16,3 @@ $MESS["TR_CA_DOCS_COMP_DOCS_BY_ORDER_PROTOCOL"] = "Скачать протоко
 $MESS["TR_CA_DOCS_COMP_DOCS_BY_ORDER_DELETE"] = "Удалить документ";
 
 $MESS["TR_CA_DOCS_COMP_DOCS_BY_ORDER_ADD"] = "Добавить";
-

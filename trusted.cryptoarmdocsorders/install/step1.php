@@ -18,4 +18,3 @@ $APPLICATION->SetTitle(Loc::getMessage("TR_CA_DOCS_INSTALL_TITLE"));
     <input type="submit" name="choice" value="<?= Loc::getMessage("TR_CA_DOCS_CONTINUE_INSTALL") ?>">
     <input type="submit" name="choice" value="<?= Loc::getMessage("TR_CA_DOCS_CANCEL_INSTALL") ?>">
 </form>
-

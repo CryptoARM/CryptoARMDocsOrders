@@ -6,6 +6,3 @@ $MESS["TR_CA_DOCS_PARTNER_NAME"] = 'ООО "Цифровые технологи�
 $MESS["TR_CA_DOCS_PARTNER_URI"] = "https://trusted.ru";
 
 $MESS["TR_CA_DOCS_CANCEL_INSTALL"] = "Отменить установку";
-
-
-
