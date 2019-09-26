@@ -42,7 +42,7 @@ Class trusted_cryptoarmdocsorders extends CModule
     {
         global $DOCUMENT_ROOT, $APPLICATION;
 
-        if (!self::d7Support() && !self::coreModuleInstalled() && self::CoreAndModuleAreCompatible()["success"]) {
+        if (!self::d7Support() || !self::coreModuleInstalled() || self::CoreAndModuleAreCompatible() !== "ok") {
             $APPLICATION->IncludeAdminFile(
                 Loc::getMessage("MOD_INSTALL_TITLE"),
                  $DOCUMENT_ROOT . "/bitrix/modules/" . self::MODULE_ID . "/install/step_cancel.php"
@@ -50,7 +50,6 @@ Class trusted_cryptoarmdocsorders extends CModule
         }
 
         self::InstallFiles();
-
         ModuleManager::registerModule(self::MODULE_ID);
     }
 
@@ -66,24 +65,14 @@ Class trusted_cryptoarmdocsorders extends CModule
 
     function CoreAndModuleAreCompatible()
     {
-        $res = [
-            "success" => false,
-            "message" => "unknown error"
-        ];
-
         include __DIR__ . "/version.php";
         $coreVersion = explode(".", ModuleManager::getVersion("trusted.cryptoarmdocs"));
         $moduleVersion = explode(".", $arModuleVersion["VERSION"]);
         if (intval($moduleVersion[0])>intval($coreVersion[0])) {
-            $res["message"] = "updateCore";
+            $res = "updateCore";
         } elseif (intval($moduleVersion[0])<intval($coreVersion[0])) {
-            $res["message"] = "updateModule";
-        } else {
-            $res = [
-                "success" => true,
-                "message" => "ok"
-            ];
-        }
+            $res = "updateModule";
+        } else $res = "ok";
 
         return $res;
     }

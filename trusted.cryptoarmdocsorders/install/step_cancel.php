@@ -19,7 +19,7 @@ include __DIR__ . "/version.php";
 
 <form action="<?= $APPLICATION->GetCurPage() ?>">
     <input type="hidden" name="lang" value="<?= LANG ?>">
-    <input type="hidden" name="id" value="trusted.cryptoarmdocsbp">
+    <input type="hidden" name="id" value="trusted.cryptoarmdocsorders">
     <input type="hidden" name="install" value="N">
     <?php
         $res = trusted_cryptoarmdocsorders::CoreAndModuleAreCompatible();

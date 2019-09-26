@@ -16,11 +16,6 @@ if (!$USER->CanDoOperation('fileman_upload_files')) {
     $APPLICATION->AuthForm(Loc::getMessage("ACCESS_DENIED"));
 }
 
-if (CModule::IsModuleInstalled($module_id)) {
-    echo GetMessage("TR_CA_DOCS_MODULE_CORE_DOES_NOT_EXIST");
-    die();
-}
-
 Loader::includeModule("fileman");
 
 // Do not show page if module sale is unavailable

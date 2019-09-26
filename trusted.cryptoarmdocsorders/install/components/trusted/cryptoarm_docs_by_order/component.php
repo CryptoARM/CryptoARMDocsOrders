@@ -4,15 +4,30 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 
 use Trusted\CryptoARM\Docs;
 use Bitrix\Main\Loader;
+use Bitrix\Main\ModuleManager;
+use Bitrix\Main\Localization\Loc;
 
-if (CModule::IsModuleInstalled('trusted.cryptoarmdocs')) {
-    echo GetMessage("TR_CA_DOCS_MODULE_CORE_DOES_NOT_EXIST");
-    die();
-}
+require_once $_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/trusted.cryptoarmdocsorders/install/index.php';
 
 if (CModule::IncludeModuleEx('trusted.cryptoarmdocs') == MODULE_DEMO_EXPIRED) {
     echo GetMessage("TR_CA_DOCS_MODULE_DEMO_EXPIRED");
     return false;
+};
+if (!trusted_cryptoarmdocsorders::coreModuleInstalled()) {
+    echo ShowMessage(Loc::getMessage("TR_CA_DOCS_NO_CORE_MODULE"));
+    return false;
+}
+
+switch (trusted_cryptoarmdocsorders::CoreAndModuleAreCompatible()) {
+    case "updateCore":
+        echo ShowMessage(Loc::getMessage("TR_CA_DOCS_UPDATE_CORE_MODULE") . intval(ModuleManager::getVersion("trusted.cryptoarmdocsorders")) . Loc::getMessage("TR_CA_DOCS_UPDATE_CORE_MODULE2"));
+        return false;
+        break;
+    case "updateModule":
+        echo ShowMessage(Loc::getMessage("TR_CA_DOCS_UPDATE_MODULE"));
+        return false;
+        break;
+    default: break;
 }
 
 Loader::includeModule('trusted.cryptoarmdocs');
