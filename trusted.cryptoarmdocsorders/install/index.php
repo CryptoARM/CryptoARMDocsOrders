@@ -95,6 +95,18 @@ Class trusted_cryptoarmdocsorders extends CModule
 
     function DoUninstall()
     {
+        global $DOCUMENT_ROOT, $APPLICATION;
+
+        $context = Application::getInstance()->getContext();
+        $request = $context->getRequest();
+        $step = (int)$request["step"];
+
+        if ($step < 2) {
+            $APPLICATION->IncludeAdminFile(
+                Loc::getMessage("MOD_UNINSTALL_TITLE"),
+                $_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/" . self::MODULE_ID . "/install/unstep1.php"
+            );
+        }
             self::UnInstallFiles();
             ModuleManager::unRegisterModule(self::MODULE_ID);
     }
