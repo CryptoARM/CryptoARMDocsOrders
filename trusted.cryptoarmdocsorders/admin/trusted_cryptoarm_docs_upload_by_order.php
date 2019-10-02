@@ -16,19 +16,18 @@ if (!$USER->CanDoOperation('fileman_upload_files')) {
     $APPLICATION->AuthForm(Loc::getMessage("ACCESS_DENIED"));
 }
 
-Loader::includeModule("fileman");
-
 // Do not show page if module sale is unavailable
 if (!ModuleManager::isModuleInstalled("sale")) {
     echo "SALE_MODULE_NOT_INSTALLED";
-    require($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/epilog_admin_after.php');
-    die();
+    require ($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/epilog_admin_after.php');
+    return false;
 }
 Loader::includeModule("sale");
+Loader::includeModule("fileman");
+Loader::includeModule("trusted.cryptoarmdocsorders");
+Loader::includeModule(TR_CA_DOCS_CORE_MODULE);
 
-$module_id = "trusted.cryptoarmdocs";
-Loader::includeModule($module_id);
-Loc::loadMessages($docRoot . "/bitrix/modules/" . $module_id . "/admin/trusted_cryptoarm_docs_upload.php");
+Loc::loadMessages($docRoot . "/bitrix/modules/" . TR_CA_DOCS_CORE_MODULE . "/admin/trusted_cryptoarm_docs_upload.php");
 
 $addUrl = 'lang=' . LANGUAGE_ID . ($logical == "Y" ? '&logical=Y' : '');
 
@@ -36,7 +35,7 @@ $strWarning = "";
 
 $io = CBXVirtualIo::GetInstance();
 
-$DOCUMENTS_DIR = COption::GetOptionString($module_id, "DOCUMENTS_DIR", "/docs/");
+$DOCUMENTS_DIR = COption::GetOptionString(TR_CA_DOCS_CORE_MODULE, "DOCUMENTS_DIR", "/docs/");
 $DOCUMENTS_DIR = $io->CombinePath("/", $DOCUMENTS_DIR);
 
 $site = CFileMan::__CheckSite($site);
@@ -115,7 +114,7 @@ if ($REQUEST_METHOD == "POST") {
                                 CDiskQuota::updateDiskQuota("file", $size, "copy");
                             $f = $io->GetFile($DOC_ROOT . $pathto);
                             $f->MarkWritable();
-                            if (COption::GetOptionString($module_id, "log_page", "Y") == "Y") {
+                            if (COption::GetOptionString(TR_CA_DOCS_CORE_MODULE, "log_page", "Y") == "Y") {
                                 $res_log['path'] = substr($pathto, 1);
                                 CEventLog::Log("content", "FILE_ADD", "main", "", serialize($res_log));
                             }

@@ -60,13 +60,13 @@ Class trusted_cryptoarmdocsorders extends CModule
 
     function coreModuleInstalled()
     {
-        return IsModuleInstalled("trusted.cryptoarmdocs");
+        return IsModuleInstalled(TR_CA_DOCS_CORE_MODULE);
     }
 
     function CoreAndModuleAreCompatible()
     {
         include __DIR__ . "/version.php";
-        $coreVersion = explode(".", ModuleManager::getVersion("trusted.cryptoarmdocs"));
+        $coreVersion = explode(".", ModuleManager::getVersion(TR_CA_DOCS_CORE_MODULE));
         $moduleVersion = explode(".", $arModuleVersion["VERSION"]);
         if (intval($moduleVersion[0])>intval($coreVersion[0])) {
             $res = "updateCore";

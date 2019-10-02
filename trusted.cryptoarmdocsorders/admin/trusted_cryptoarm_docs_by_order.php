@@ -9,13 +9,14 @@ use Bitrix\Main\ModuleManager;
 require_once $_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_before.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/trusted.cryptoarmdocsorders/install/index.php';
 
-$module_id = "trusted.cryptoarmdocs";
+Loader::IncludeModule('trusted.cryptoarmdocsorders');
+$module_id = TR_CA_DOCS_CORE_MODULE;
 
 $app = Application::getInstance();
 $context = $app->getContext();
 $docRoot = $context->getServer()->getDocumentRoot();
 
-if (CModule::IncludeModuleEx('trusted.cryptoarmdocs') == MODULE_DEMO_EXPIRED) {
+if (CModule::IncludeModuleEx(TR_CA_DOCS_CORE_MODULE) == MODULE_DEMO_EXPIRED) {
     require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_after.php");
     echo CAdminMessage::GetMessage("TR_CA_DOCS_MODULE_DEMO_EXPIRED");
     return false;
@@ -283,15 +284,15 @@ while ($arRes = $rsData->NavNext(true, "f_")) {
     $docEmailIcon = "<div class='trca-email-status'>";
     $docEmailStatus = "<div class='trca-email-status'>";
     if (!$emailStatus) {
-        $docEmailIcon .= '<img src="/bitrix/themes/.default/icons/trusted.cryptoarmdocs/email_not_sent.png"';
+        $docEmailIcon .= '<img src="/bitrix/themes/.default/icons/' . TR_CA_DOCS_CORE_MODULE . '/email_not_sent.png"';
         $docEmailIcon .= ' class="trca-email-icon">';
         $docEmailStatus .= Loc::getMessage("TR_CA_DOCS_EMAIL_NOT_SENT");
     } elseif ($emailStatus == "SENT") {
-        $docEmailIcon .= '<img src="/bitrix/themes/.default/icons/trusted.cryptoarmdocs/email_sent.png"';
+        $docEmailIcon .= '<img src="/bitrix/themes/.default/icons/' . TR_CA_DOCS_CORE_MODULE . '/email_sent.png"';
         $docEmailIcon .= ' class="trca-email-icon">';
         $docEmailStatus .= Loc::getMessage("TR_CA_DOCS_EMAIL_SENT");
     } elseif ($emailStatus == "READ") {
-        $docEmailIcon .= '<img src="/bitrix/themes/.default/icons/trusted.cryptoarmdocs/email_read.png"';
+        $docEmailIcon .= '<img src="/bitrix/themes/.default/icons/' . TR_CA_DOCS_CORE_MODULE . '/email_read.png"';
         $docEmailIcon .= ' class="trca-email-icon">';
         $docEmailStatus .= Loc::getMessage("TR_CA_DOCS_EMAIL_READ");
     }
