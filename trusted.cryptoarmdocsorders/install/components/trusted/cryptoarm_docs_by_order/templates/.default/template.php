@@ -5,12 +5,15 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 use Trusted\CryptoARM\Docs;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\Application;
+use Bitrix\Main\Loader;
+
+Loader::includeModule('trusted.cryptoarmdocsorders');
 
 $this->addExternalJS("https://cdn.jsdelivr.net/npm/vue/dist/vue.js");
 CJSCore::RegisterExt(
     "components",
     array(
-        "js" => "/bitrix/js/trusted.cryptoarmdocs/components.js",
+        "js" => "/bitrix/js/" . TR_CA_DOCS_CORE_MODULE . "/components.js",
     )
 );
 CUtil::InitJSCore(array('components'));

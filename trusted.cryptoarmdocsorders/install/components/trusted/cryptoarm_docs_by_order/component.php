@@ -8,16 +8,17 @@ use Bitrix\Main\ModuleManager;
 use Bitrix\Main\Localization\Loc;
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/trusted.cryptoarmdocsorders/install/index.php';
+Loader::includeModule('trusted.cryptoarmdocsorders');
+Loader::includeModule(TR_CA_DOCS_CORE_MODULE);
 
-if (CModule::IncludeModuleEx('trusted.cryptoarmdocs') == MODULE_DEMO_EXPIRED) {
+if (CModule::IncludeModuleEx(TR_CA_DOCS_CORE_MODULE) == MODULE_DEMO_EXPIRED) {
     echo GetMessage("TR_CA_DOCS_MODULE_DEMO_EXPIRED");
     return false;
-};
+}
 if (!trusted_cryptoarmdocsorders::coreModuleInstalled()) {
     echo ShowMessage(Loc::getMessage("TR_CA_DOCS_NO_CORE_MODULE"));
     return false;
 }
-
 switch (trusted_cryptoarmdocsorders::CoreAndModuleAreCompatible()) {
     case "updateCore":
         echo ShowMessage(Loc::getMessage("TR_CA_DOCS_UPDATE_CORE_MODULE") . intval(ModuleManager::getVersion("trusted.cryptoarmdocsorders")) . Loc::getMessage("TR_CA_DOCS_UPDATE_CORE_MODULE2"));
@@ -30,7 +31,7 @@ switch (trusted_cryptoarmdocsorders::CoreAndModuleAreCompatible()) {
     default: break;
 }
 
-Loader::includeModule('trusted.cryptoarmdocs');
+Loader::includeModule(TR_CA_DOCS_CORE_MODULE);
 
 if ($USER->IsAuthorized()) {
     $docs = Docs\Database::getDocumentsByOrder($arParams["ORDER"]);
