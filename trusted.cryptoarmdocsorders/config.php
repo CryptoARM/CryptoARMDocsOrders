@@ -5,6 +5,7 @@ $coreIds = array(
     'trusted.cryptoarmdocsbusiness',
     'trusted.cryptoarmdocsstart',
 );
+$module_id = 'not found';
 foreach ($coreIds as $coreId) {
     $corePathDir = $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/" . $coreId . "/";
     if(file_exists($corePathDir)) {
@@ -12,6 +13,7 @@ foreach ($coreIds as $coreId) {
         break;
     }
 }
+
 define("TR_CA_DOCS_CORE_MODULE", $module_id);
 
 define("TR_CA_DOCS_ORDERS_MODULE_ID", "trusted.cryptoarmdocsorders");
