@@ -25,7 +25,7 @@ switch (trusted_cryptoarmdocsorders::CoreAndModuleAreCompatible()) {
         return false;
         break;
     case "updateModule":
-        echo ShowMessage(Loc::getMessage("TR_CA_DOCS_UPDATE_MODULE"));
+        echo ShowMessage(Loc::getMessage("TR_CA_DOCS_UPDATE_ORDERS_MODULE"));
         return false;
         break;
     default: break;

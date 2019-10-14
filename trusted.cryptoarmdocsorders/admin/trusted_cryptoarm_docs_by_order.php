@@ -34,7 +34,7 @@ switch (trusted_cryptoarmdocsorders::CoreAndModuleAreCompatible()) {
         break;
     case "updateModule":
         require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_after.php");
-        echo CAdminMessage::ShowMessage(Loc::getMessage("TR_CA_DOCS_UPDATE_MODULE"));
+        echo CAdminMessage::ShowMessage(Loc::getMessage("TR_CA_DOCS_UPDATE_ORDERS_MODULE"));
         return false;
         break;
     default: break;
