@@ -31,8 +31,6 @@ switch (trusted_cryptoarmdocsorders::CoreAndModuleAreCompatible()) {
     default: break;
 }
 
-Loader::includeModule(TR_CA_DOCS_CORE_MODULE);
-
 if ($USER->IsAuthorized()) {
     $docs = Docs\Database::getDocumentsByOrder($arParams["ORDER"]);
 } else {
