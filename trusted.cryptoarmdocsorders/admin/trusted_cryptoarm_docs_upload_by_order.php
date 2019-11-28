@@ -89,11 +89,13 @@ if ($REQUEST_METHOD == "POST") {
                     $strWarning .= Loc::getMessage("TR_CA_DOCS_UPLOAD_FILE_EXISTS1") . " \"" . $pathto . "\" " . Loc::getMessage("TR_CA_DOCS_UPLOAD_FILE_EXISTS2") . ".\n";
                 elseif (!$USER->IsAdmin() && (HasScriptExtension($pathto) || substr(CFileman::GetFileName($pathto), 0, 1) == "."))
                     $strWarning .= Loc::getMessage("TR_CA_DOCS_UPLOAD_PHPERROR") . " \"" . $pathto . "\".\n";
-                elseif (!Docs\Utils::propertyNumericalIdValidation($arOrderId))
+                elseif (!Docs\Utils::propertyNumericalIdValidation($arOrderId) && !$invalidOrderIdWarningShown) {
                     $strWarning .= Loc::getMessage("TR_CA_DOCS_UPLOAD_INVALID_ORDER_ID") . "\n";
-                elseif (!CSaleOrder::GetByID((int)$arOrderId) && !$orderWarningShown) {
+                    $invalidOrderIdWarningShown = true;
+                }
+                elseif (!CSaleOrder::GetByID((int)$arOrderId) && !$orderIdWarningShown) {
                     $strWarning .= Loc::getMessage("TR_CA_DOCS_UPLOAD_ORDER_ID_DOESNT_EXIST");
-                    $orderWarningShown = true;
+                    $orderIdWarningShown = true;
                 }
                 elseif (preg_match("/^\/bitrix\/.*/", $pathto) && !$dirWarningShown) {
                     $strWarning .= Loc::getMessage("TR_CA_DOCS_UPLOAD_INVALID_DIR");
