@@ -91,10 +91,14 @@ if ($REQUEST_METHOD == "POST") {
                     $strWarning .= Loc::getMessage("TR_CA_DOCS_UPLOAD_PHPERROR") . " \"" . $pathto . "\".\n";
                 elseif (!Docs\Utils::propertyNumericalIdValidation($arOrderId))
                     $strWarning .= Loc::getMessage("TR_CA_DOCS_UPLOAD_INVALID_ORDER_ID") . "\n";
-                elseif (!CSaleOrder::GetByID((int)$arOrderId))
+                elseif (!CSaleOrder::GetByID((int)$arOrderId) && !$orderWarningShown) {
                     $strWarning .= Loc::getMessage("TR_CA_DOCS_UPLOAD_ORDER_ID_DOESNT_EXIST");
-                elseif (preg_match("/^\/bitrix\/.*/", $pathto))
+                    $orderWarningShown = true;
+                }
+                elseif (preg_match("/^\/bitrix\/.*/", $pathto) && !$dirWarningShown) {
                     $strWarning .= Loc::getMessage("TR_CA_DOCS_UPLOAD_INVALID_DIR");
+                    $dirWarningShown = true;
+                }
                 else {
                     $bQuota = true;
                     if (COption::GetOptionInt("main", "disk_space") > 0) {
