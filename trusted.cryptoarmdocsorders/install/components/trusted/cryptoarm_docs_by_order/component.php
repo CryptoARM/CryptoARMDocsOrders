@@ -50,6 +50,7 @@ foreach ($docList as $doc) {
         "TYPE_STRING" => Docs\Utils::getTypeString($doc),
         "STATUS" => $doc->getStatus(),
         "STATUS_STRING" => Docs\Utils::getStatusString($doc),
+        "DATE_CREATED" => date("d.m.o H:i", strtotime(Docs\Database::getDocumentById($doc->getId())->getCreated())),
     );
     $allIds[] = $doc->getId();
 }

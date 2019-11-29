@@ -60,27 +60,28 @@ $zipName = $title . " " . date($DB->DateFormatToPHP(CSite::GetDateFormat("FULL")
                     $docId = $doc["ID"];
                     $docType = $doc["TYPE"];
                     $docStatus = $doc["STATUS"];
+                    $docCreated = $doc["DATE_CREATED"];
 
                     if ($docType === DOC_TYPE_SIGNED_FILE) {
                         if ($docStatus == DOC_STATUS_BLOCKED){
-                            $icon = "lock";
+                            $icon = "create";
                             $iconCss = "color: red";
                         } else {
-                            $icon = "check_circles";
-                            $iconCss = "color: rgb(33, 150, 243)";
+                            $icon = "done_all";
+                            $iconCss = "color: green";
                         };
                     } else {
                         switch ($docStatus) {
                         case DOC_STATUS_NONE:
-                            $icon = "insert_drive_file";
-                            $iconCss = "color: green";
+                            $icon = "create";
+                            $iconCss = "color: rgb(33, 150, 243)";
                             break;
                         case DOC_STATUS_BLOCKED:
                             $icon = "lock";
                             $iconCss = "color: red";
                             break;
                         case DOC_STATUS_CANCELED:
-                            $icon = "insert_drive_file";
+                            $icon = "check";
                             $iconCss = "color: red";
                             break;
                         case DOC_STATUS_ERROR:
@@ -94,27 +95,34 @@ $zipName = $title . " " . date($DB->DateFormatToPHP(CSite::GetDateFormat("FULL")
                 <doc-name color="<?= $iconCss ?>" icon="<?= $icon ?>" name="<?= $doc["NAME"] ?>"
                           description="<?= Docs\DocumentsByOrder::getRoleString(Docs\Database::getDocumentById($docId)) ?>">
                 </doc-name>
+
+                <doc-info info="<?= $docCreated ?>"
+                    title="<?= Loc::getMessage("TR_CA_DOCS_COMP_DOCS_BY_USER_TIMESTAMP"); ?>">
+                </doc-info>
+                <doc-info info="<?= $docId ?>"
+                    title="<?= Loc::getMessage("TR_CA_DOCS_COMP_DOCS_BY_USER_ID"); ?>">
+                </doc-info>
                 <doc-buttons>
-                    <doc-button icon="email" :id="<?= $docId ?>" @button-click="sendEmail"
-                                title="<?= Loc::getMessage("TR_CA_DOCS_COMP_DOCS_BY_ORDER_SEND_DOCS"); ?>">
-                    </doc-button>
-                    <doc-button icon="create" :id="<?= $docId ?>" @button-click="sign"
-                                title="<?= Loc::getMessage("TR_CA_DOCS_COMP_DOCS_BY_ORDER_SIGN"); ?>">
-                    </doc-button>
                     <?
                     if ($docType === DOC_TYPE_SIGNED_FILE) {
                     ?>
-                    <doc-button icon="info" :id="<?= $docId ?>" @button-click="verify"
+                    <doc-button icon="help" :id="<?= $docId ?>" @button-click="verify"
                                 title="<?= Loc::getMessage("TR_CA_DOCS_COMP_DOCS_BY_ORDER_VERIFY"); ?>">
                     </doc-button>
                     <?
                     }
                     ?>
-                    <doc-button icon="save_alt" :id="<?= $docId ?>" @button-click="download"
+                    <doc-button icon="create" :id="<?= $docId ?>" @button-click="sign"
+                                title="<?= Loc::getMessage("TR_CA_DOCS_COMP_DOCS_BY_ORDER_SIGN"); ?>">
+                    </doc-button>
+                    <doc-button icon="file_download" :id="<?= $docId ?>" @button-click="download"
                                 title="<?= Loc::getMessage("TR_CA_DOCS_COMP_DOCS_BY_ORDER_DOWNLOAD"); ?>">
                     </doc-button>
-                    <doc-button icon="description" :id="<?= $docId ?>" @button-click="protocol"
+                    <doc-button icon="info" :id="<?= $docId ?>" @button-click="protocol"
                                 title="<?= Loc::getMessage("TR_CA_DOCS_COMP_DOCS_BY_ORDER_PROTOCOL"); ?>">
+                    </doc-button>
+                    <doc-button icon="email" :id="<?= $docId ?>" @button-click="sendEmail"
+                                title="<?= Loc::getMessage("TR_CA_DOCS_COMP_DOCS_BY_ORDER_SEND_DOCS"); ?>">
                     </doc-button>
                 </doc-buttons>
             </docs-items>
