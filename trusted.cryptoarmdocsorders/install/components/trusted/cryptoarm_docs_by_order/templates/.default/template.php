@@ -102,7 +102,7 @@ $zipName = $title . " " . date($DB->DateFormatToPHP(CSite::GetDateFormat("FULL")
                 <doc-info info="<?= $docId ?>"
                     title="<?= Loc::getMessage("TR_CA_DOCS_COMP_DOCS_BY_USER_ID"); ?>">
                 </doc-info>
-                <doc-buttons>
+                <doc-buttons component="by_order">
                     <?
                     if ($docType === DOC_TYPE_SIGNED_FILE) {
                     ?>
