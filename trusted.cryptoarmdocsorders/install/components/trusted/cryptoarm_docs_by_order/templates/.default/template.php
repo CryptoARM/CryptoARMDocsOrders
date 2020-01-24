@@ -64,7 +64,7 @@ $zipName = $title . " " . date($DB->DateFormatToPHP(CSite::GetDateFormat("FULL")
 
                     if ($docType === DOC_TYPE_SIGNED_FILE) {
                         if ($docStatus == DOC_STATUS_BLOCKED){
-                            $icon = "create";
+                            $icon = "lock";
                             $iconCss = "color: red";
                         } else {
                             $icon = "done_all";
