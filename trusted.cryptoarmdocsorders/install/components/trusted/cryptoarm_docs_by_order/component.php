@@ -7,6 +7,7 @@ use Bitrix\Main\Loader;
 use Bitrix\Main\ModuleManager;
 use Bitrix\Main\Localization\Loc;
 
+if($USER->IsAuthorized()){
 require_once $_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/trusted.cryptoarmdocsorders/install/index.php';
 Loader::includeModule('trusted.cryptoarmdocsorders');
 Loader::includeModule(TR_CA_DOCS_CORE_MODULE);
@@ -63,3 +64,4 @@ $arResult = array(
 
 $this->IncludeComponentTemplate();
 
+}
