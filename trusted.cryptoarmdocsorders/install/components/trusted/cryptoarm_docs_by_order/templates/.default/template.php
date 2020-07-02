@@ -28,11 +28,12 @@ $docs = $arResult['DOCS'];
 
 $title = Loc::getMessage("TR_CA_DOCS_COMP_DOCS_BY_ORDER_DOCS_BY_ORDER") . $arParams["ORDER"];
 $zipName = $title . " " . date($DB->DateFormatToPHP(CSite::GetDateFormat("FULL")), time());
+$comp_id = Docs\Utils::generateUUID();
 ?>
 
 <a id="trca-reload-doc" href="<?= $_SERVER["REQUEST_URI"] ?>"></a>
 
-<div id="trca-docs-by-order">
+<div id="trca-docs-by-order_<?= $comp_id?>">
     <trca-docs>
         <header-title title="<?= $title ?>">
             <? if (!empty($allIds)) { ?>
@@ -136,7 +137,7 @@ $zipName = $title . " " . date($DB->DateFormatToPHP(CSite::GetDateFormat("FULL")
 
 <script>
     new Vue({
-        el: '#trca-docs-by-order',
+        el: '#trca-docs-by-order_<?= $comp_id?>',
         methods: {
             sendEmail: function(id) {
                 let object = new Object ();
