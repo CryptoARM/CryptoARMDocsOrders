@@ -18,26 +18,26 @@ $docRoot = $context->getServer()->getDocumentRoot();
 
 if (CModule::IncludeModuleEx(TR_CA_DOCS_CORE_MODULE) == MODULE_DEMO_EXPIRED) {
     require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_after.php");
-    echo CAdminMessage::GetMessage("TR_CA_DOCS_MODULE_DEMO_EXPIRED");
+    echo CAdminMessage::ShowMessage(Loc::getMessage("TR_CA_DOCS_MODULE_DEMO_EXPIRED"));
     return false;
-};
-if (!trusted_cryptoarmdocsorders::coreModuleInstalled()) {
+}
+$trusted_cryptoarmdocsorders = new trusted_cryptoarmdocsorders();
+if (!$trusted_cryptoarmdocsorders->coreModuleInstalled()) {
     require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_after.php");
     echo CAdminMessage::ShowMessage(Loc::getMessage("TR_CA_DOCS_NO_CORE_MODULE"));
     return false;
 }
-switch (trusted_cryptoarmdocsorders::CoreAndModuleAreCompatible()) {
+switch ($trusted_cryptoarmdocsorders->CoreAndModuleAreCompatible()) {
     case "updateCore":
         require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_after.php");
         echo CAdminMessage::ShowMessage(Loc::getMessage("TR_CA_DOCS_UPDATE_CORE_MODULE") . intval(ModuleManager::getVersion("trusted.cryptoarmdocsorders")) . Loc::getMessage("TR_CA_DOCS_UPDATE_CORE_MODULE2"));
         return false;
-        break;
     case "updateModule":
         require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_after.php");
         echo CAdminMessage::ShowMessage(Loc::getMessage("TR_CA_DOCS_UPDATE_ORDERS_MODULE"));
         return false;
+    default:
         break;
-    default: break;
 }
 
 Loc::loadMessages($docRoot . "/bitrix/modules/" . $module_id . "/admin/trusted_cryptoarm_docs.php");
@@ -89,8 +89,10 @@ $reloadTableJs = $sTableID . '.GetAdminList("")';
 
 function CheckFilter() {
     global $FilterArr, $lAdmin;
-    foreach ($FilterArr as $f)
-        global $$f;
+    foreach ($FilterArr as $f) {
+	    global $$f;
+    }
+
     // return false on errors
     return count($lAdmin->arFilterErrors) == 0;
 }
@@ -124,13 +126,13 @@ if (CheckFilter()) {
 if (($arID = $lAdmin->GroupAction()) && $POST_RIGHT == "W") {
 
     // selected = checkbox "for all"
+	$ids = array();
     if ($_REQUEST['action_target'] == 'selected') {
         $orders = Docs\Database::getOrdersByFilter(array($by => $order), $arFilter);
         $arID = array();
         while ($order = $orders->Fetch()) {
             $arID[] = $order["ORDER"];
         }
-        $ids = array();
         foreach ($arID as $order) {
             $idsOrder = Docs\Database::getIdsByOrder($order);
             foreach ($idsOrder as $id) {

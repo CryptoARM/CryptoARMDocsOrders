@@ -22,11 +22,12 @@ include __DIR__ . "/version.php";
     <input type="hidden" name="id" value="trusted.cryptoarmdocsorders">
     <input type="hidden" name="install" value="N">
     <?php
-        $res = trusted_cryptoarmdocsorders::CoreAndModuleAreCompatible();
+        $trusted_cryptoarmdocsorders = new trusted_cryptoarmdocsorders();
+        $res = $trusted_cryptoarmdocsorders->CoreAndModuleAreCompatible();
         if (!CheckVersion(ModuleManager::getVersion("main"), "14.00.00")) {
             echo CAdminMessage::ShowMessage(Loc::getMessage("TR_CA_DOCS_NO_D7"));
         }
-        elseif (!trusted_cryptoarmdocsorders::coreModuleInstalled()){
+        elseif (!$trusted_cryptoarmdocsorders->coreModuleInstalled()){
             echo CAdminMessage::ShowMessage(Loc::getMessage("TR_CA_DOCS_NO_CORE_MODULE"));
         }
         elseif ($res === "updateCore") {
