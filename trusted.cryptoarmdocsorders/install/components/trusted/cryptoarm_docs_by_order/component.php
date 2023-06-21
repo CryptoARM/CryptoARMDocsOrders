@@ -16,20 +16,20 @@ if (CModule::IncludeModuleEx(TR_CA_DOCS_CORE_MODULE) == MODULE_DEMO_EXPIRED) {
     echo GetMessage("TR_CA_DOCS_MODULE_DEMO_EXPIRED");
     return false;
 }
-if (!trusted_cryptoarmdocsorders::coreModuleInstalled()) {
+$trusted_cryptoarmdocsorders = new trusted_cryptoarmdocsorders();
+if (!$trusted_cryptoarmdocsorders->coreModuleInstalled()) {
     echo ShowMessage(Loc::getMessage("TR_CA_DOCS_NO_CORE_MODULE"));
     return false;
 }
-switch (trusted_cryptoarmdocsorders::CoreAndModuleAreCompatible()) {
+switch ($trusted_cryptoarmdocsorders->CoreAndModuleAreCompatible()) {
     case "updateCore":
         echo ShowMessage(Loc::getMessage("TR_CA_DOCS_UPDATE_CORE_MODULE") . intval(ModuleManager::getVersion("trusted.cryptoarmdocsorders")) . Loc::getMessage("TR_CA_DOCS_UPDATE_CORE_MODULE2"));
         return false;
-        break;
     case "updateModule":
         echo ShowMessage(Loc::getMessage("TR_CA_DOCS_UPDATE_ORDERS_MODULE"));
         return false;
-        break;
-    default: break;
+    default:
+		break;
 }
 
 if ($USER->IsAuthorized()) {

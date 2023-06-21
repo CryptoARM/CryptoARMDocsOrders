@@ -42,14 +42,14 @@ Class trusted_cryptoarmdocsorders extends CModule
     {
         global $DOCUMENT_ROOT, $APPLICATION;
 
-        if (!self::d7Support() || !self::coreModuleInstalled() || self::CoreAndModuleAreCompatible() !== "ok") {
+        if (!$this->d7Support() || !$this->coreModuleInstalled() || $this->CoreAndModuleAreCompatible() !== "ok") {
             $APPLICATION->IncludeAdminFile(
                 Loc::getMessage("MOD_INSTALL_TITLE"),
                  $DOCUMENT_ROOT . "/bitrix/modules/" . self::MODULE_ID . "/install/step_cancel.php"
             );
         }
 
-        self::InstallFiles();
+        $this->InstallFiles();
         ModuleManager::registerModule(self::MODULE_ID);
     }
 
@@ -107,7 +107,7 @@ Class trusted_cryptoarmdocsorders extends CModule
                 $_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/" . self::MODULE_ID . "/install/unstep1.php"
             );
         }
-            self::UnInstallFiles();
+            $this->UnInstallFiles();
             ModuleManager::unRegisterModule(self::MODULE_ID);
     }
 
